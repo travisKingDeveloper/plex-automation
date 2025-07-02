@@ -45,16 +45,7 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    ports:
-      - 80:80
-    volumes:
-      - /Users/travisking/Project/plex-automation/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    restart: unless-stopped
-
+    
   readarr:
     image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
