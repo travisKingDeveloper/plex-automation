@@ -1,0 +1,71 @@
+
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /Users/travisking/Project/plex-automation/sonarr/config:/config
+      - /Volumes/PlexStorage/downloads:/downloads
+      - /Volumes/Plex/TV:/tv  # Updated to match your Plex path
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /Users/travisking/Project/plex-automation/sabnzbd/config:/config
+      - /Volumes/PlexStorage/incomplete:/incomplete-downloads #optional
+      - /Volumes/PlexStorage/downloads:/downloads #optional
+
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /Users/travisking/Project/plex-automation/radarr/config:/config
+      - /Volumes/PlexStorage/downloads:/downloads
+      - /Volumes/Plex/Movies:/movies
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - /Users/travisking/Project/plex-automation/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /Users/travisking/Project/plex-automation/readarr/config:/config
+      - /Volumes/PlexStorage/downloads:/downloads
+      - /Volumes/Plex/books:/books
+    ports:
+      - 8787:8787
+    restart: unless-stopped
